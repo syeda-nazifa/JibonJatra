@@ -1,26 +1,28 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./config/db.js"; // <-- import
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 dotenv.config();
 
-// Connect DB
-connectDB();
-
 const app = express();
 
-// Middleware
-app.use(cors());
+// Basic middlewares
+app.use(cors({ origin: "http://localhost:3000" })); // change origin for your frontend in production
 app.use(express.json());
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("JibonJatra API is running...");
-});
+// Connect DB
+await connectDB();
 
-// Start server
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
+
+// Health
+app.get("/", (req, res) => res.send("OK"));
+
+// Start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
