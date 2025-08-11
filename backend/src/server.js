@@ -1,27 +1,18 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import connectDB from "./config/db.js"; // <-- import
 
 dotenv.config();
+
+// Connect DB
+connectDB();
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// MongoDB connection
-try {
-  await mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
-  console.log("✅ MongoDB Connected");
-} catch (err) {
-  console.error("❌ MongoDB connection failed:", err);
-  process.exit(1);
-}
 
 // Routes
 app.get("/", (req, res) => {
