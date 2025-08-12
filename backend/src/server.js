@@ -4,7 +4,11 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+
 import postRoutes from "./routes/postRoutes.js";  // added this line
+
+import adminRoutes from "./routes/adminRoutes.js";
+
 
 dotenv.config();
 
@@ -20,7 +24,11 @@ await connectDB();
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+
 app.use("/api/posts", postRoutes);  // added this line
+
+app.use("/admin", adminRoutes);
+
 
 // Health check
 app.get("/", (req, res) => res.send("Running"));

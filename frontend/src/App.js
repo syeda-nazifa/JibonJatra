@@ -7,17 +7,33 @@ import Posts from "./pages/Posts";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 
+import AdminRoleUpdate from "./pages/AdminRoleUpdate";
+import AdminUserManagement from "./pages/AdminUserManagement";
+
+import ProfileEdit from "./pages/ProfileEdit";
+
+
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/register" element={<Register />} />
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+       
         <Route path="/profile" element={<Profile />} />
          <Route path="/feed" element={<Feed />} /> 
          <Route path="/posts" element={<Posts />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/edit-post/:id" element={<EditPost />} />
+
+
+        <Route path="/admin/role-update" element={<AdminRoleUpdate />} />
+        <Route path="/admin/users" element={<AdminUserManagement />} />
+
+        <Route path="/profileEdit" element={<ProfileEdit />} />
+
+
       </Routes>
     </Router>
   );

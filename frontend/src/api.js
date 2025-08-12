@@ -9,5 +9,13 @@ api.interceptors.request.use((config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
-
+//
+// export const updateUserRole = (userId, role) => {
+//   return api.put("/admin/role", { userId, role });
+// };
+//
+export const getUsers = () => api.get("/admin/users"); // you'll need this route in backend
+export const updateUserRole = (userId, role) => api.put("/admin/role", { userId, role });
+export const deleteUser = (userId) => api.delete(`/admin/user/${userId}`);
+//
 export default api;
