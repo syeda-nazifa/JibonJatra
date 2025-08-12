@@ -1,10 +1,5 @@
 import jwt from "jsonwebtoken"
 
-/**
- * auth(roles)
- * - If roles is non-empty, it will enforce allowed roles.
- * - Usage: as middleware: auth() or auth(['admin']) or auth('admin')
- */
 
 export default (roles = []) => {
   if (typeof roles === "string") roles = [roles];

@@ -5,10 +5,7 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-/** POST /api/auth/register
- * body: { name, email, password }
- * returns: { token }
- */
+//post - register
 router.post("/register", async (req, res) => {
   const { name, email, password, role } = req.body;
   console.log(role);
@@ -38,10 +35,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/** POST /api/auth/login
- * body: { email, password }
- * returns: { token }
- */
+// post -login
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ message: "Email and password required." });
