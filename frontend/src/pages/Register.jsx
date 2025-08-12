@@ -13,7 +13,7 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/api/auth/register", { name, email, password });
+      const res = await api.post("/api/auth/register", { name, email, password, role });
       localStorage.setItem("token", res.data.token);
       navigate("/profile");
     } catch (err) {
