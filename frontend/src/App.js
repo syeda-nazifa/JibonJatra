@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
-function App() {
-  const [message, setMessage] = useState("Loading...");
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/")
-      .then(res => setMessage(res.data))
-      .catch(err => setMessage("Error connecting to backend"));
-  }, []);
-
+export default function App() {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>{message}</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </Router>
   );
 }
-
-export default App;
