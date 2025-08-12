@@ -11,7 +11,6 @@ export default function Profile() {
     const fetchProfile = async () => {
       try {
         const res = await api.get("/api/profile");
-        console.log("Profile API response:", res.data);
         setUser(res.data);
       } catch {
         navigate("/login");
@@ -28,9 +27,20 @@ export default function Profile() {
       <p><strong>Name:</strong> {user.name}</p>
       <p><strong>Email:</strong> {user.email}</p>
       <p><strong>Role:</strong> {user.role}</p>
+
+      <button
+        className="mt-4 w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        onClick={() => navigate("/profileEdit")}
+      >
+        Edit Profile
+      </button>
+
       <button
         className="mt-4 w-full bg-red-500 text-white p-2 rounded hover:bg-red-600"
-        onClick={() => { localStorage.removeItem("token"); navigate("/login"); }}
+        onClick={() => {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }}
       >
         Logout
       </button>
