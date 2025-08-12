@@ -10,7 +10,8 @@ const router = express.Router();
  * returns: { token }
  */
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
+  console.log(role);
   if (!name || !email || !password)
     return res.status(400).json({ message: "Name, email and password are required." });
 
@@ -23,7 +24,7 @@ router.post("/register", async (req, res) => {
     const hashed = await bcrypt.hash(password, 10);
 
     // Create user
-    const user = await User.create({ name, email, password: hashed });
+    const user = await User.create({ name, email, password: hashed, role });
 
     // Create JWT (keep minimal info)
     const token = jwt.sign({ id: user._id.toString(), role: user.role }, process.env.JWT_SECRET, {
@@ -47,10 +48,10 @@ router.post("/login", async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials." });
+    if (!user) return res.status(400).json({ message: "Email Not Found" });
 
     const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(400).json({ message: "Invalid credentials." });
+    if (!ok) return res.status(400).json({ message: "Password Didn't Match" });
 
     const token = jwt.sign({ id: user._id.toString(), role: user.role }, process.env.JWT_SECRET, {
       expiresIn: "1d"

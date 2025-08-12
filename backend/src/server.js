@@ -21,7 +21,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 
 // Health
-app.get("/", (req, res) => res.send("OK"));
+app.get("/", (req, res) => res.send("Running"));
 
 // Start
 const PORT = process.env.PORT || 5000;
