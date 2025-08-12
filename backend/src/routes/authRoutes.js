@@ -37,7 +37,6 @@ router.post("/register", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-
 /** POST /api/auth/login
  * body: { email, password }
  * returns: { token }
