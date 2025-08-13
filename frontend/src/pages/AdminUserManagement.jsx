@@ -10,6 +10,7 @@ export default function AdminUserManagement() {
     setLoading(true);
     try {
       const res = await getUsers();
+      console.log("Users fetched:", res.data);
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users:", err);
