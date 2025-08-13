@@ -7,6 +7,7 @@ export const createPost = async (req, res) => {
   try {
     const { title, content, category, location, images } = req.body;
     console.log(req.body);
+    console.log("req.user.id:", req.user?.id);
 
     const post = await Post.create({
       user: req.user.id,
@@ -19,8 +20,10 @@ export const createPost = async (req, res) => {
 
     res.status(201).json(post);
   } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  console.error("Error creating post:", error);
+  res.status(500).json({ message: error.message });
+}
+
 };
 
 // @desc    Get all posts

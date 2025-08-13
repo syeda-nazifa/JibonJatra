@@ -83,7 +83,7 @@ export default function ProfileViewUpdate({ user, onUpdate }) {
         // If password changed, force logout and redirect to login
         localStorage.removeItem('token');
         alert('Password changed successfully. Please log in again.');
-        navigate('/login');
+        navigate('/');
       } else {
         if (onUpdate) onUpdate(updatedUser); // update parent state
       }

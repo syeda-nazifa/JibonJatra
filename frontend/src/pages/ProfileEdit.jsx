@@ -14,7 +14,7 @@ export default function ProfileEdit() {
         const res = await api.get("/api/profile");
         setUser(res.data);
       } catch {
-        navigate("/login");
+        navigate("/");
       }
     };
     fetchProfile();

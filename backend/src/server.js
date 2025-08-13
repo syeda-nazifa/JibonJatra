@@ -27,7 +27,7 @@ app.use("/api/profile", profileRoutes);
 
 app.use("/api/posts", postRoutes);  // added this line
 
-app.use("/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 // Health check

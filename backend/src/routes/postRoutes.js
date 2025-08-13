@@ -10,13 +10,14 @@ import protect from "../middleware/auth.js";
 
 const router = express.Router();
 
+// router.post("/", auth(), createPost);
 router.route("/")
   .get(getPosts)
-  .post(protect, createPost);
+  .post(protect(), createPost);
 
 router.route("/:id")
   .get(getPostById)
-  .put(protect, updatePost)
-  .delete(protect, deletePost);
+  .put(protect(), updatePost)
+  .delete(protect(), deletePost);
 
 export default router;
