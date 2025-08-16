@@ -582,7 +582,7 @@ export default function Login() {
 
               {/* Forgot password link */}
               <div className="text-center">
-                <a href="#" className="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-200">
+                <a href="/" className="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-200">
                   Forgot your password?
                 </a>
               </div>
