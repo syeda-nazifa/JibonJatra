@@ -1,52 +1,3 @@
-// import { useEffect, useState } from "react";
-// import api from "../api";
-// import Layout from "../components/Layout";
-// import { useNavigate } from "react-router-dom";
-
-// export default function Profile() {
-//   const [user, setUser] = useState(null);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchProfile = async () => {
-//       try {
-//         const res = await api.get("/api/profile");
-//         setUser(res.data);
-//       } catch {
-//         navigate("/login");
-//       }
-//     };
-//     fetchProfile();
-//   }, [navigate]);
-
-//   if (!user) return null;
-
-//   return (
-//     <Layout>
-//       <h1 className="text-2xl font-bold mb-4 text-center">Profile</h1>
-//       <p><strong>Name:</strong> {user.name}</p>
-//       <p><strong>Email:</strong> {user.email}</p>
-//       <p><strong>Role:</strong> {user.role}</p>
-
-//       <button
-//         className="mt-4 w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-//         onClick={() => navigate("/profileEdit")}
-//       >
-//         Edit Profile
-//       </button>
-
-//       <button
-//         className="mt-4 w-full bg-red-500 text-white p-2 rounded hover:bg-red-600"
-//         onClick={() => {
-//           localStorage.removeItem("token");
-//           navigate("/");
-//         }}
-//       >
-//         Logout
-//       </button>
-//     </Layout>
-//   );
-// }
 
 
 import { useEffect, useState } from "react";
@@ -58,19 +9,33 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
+useEffect(() => {
     const fetchProfile = async () => {
-      try {
-        const res = await api.get("/api/profile");
-        setUser(res.data);
-      } catch {
-        navigate("/login");
+      if (!user) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+        try {
+          const res = await api.get("/api/profile", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setUser(res.data);
+        } catch (err) {
+          console.error(err);
+          navigate("/");
+        }
       }
     };
+
     fetchProfile();
-  }, [navigate]);
+  }, [user, setUser, navigate]);
+
 
   if (!user) return <p className="p-4 text-center text-gray-600">Loading profile...</p>;
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-6 relative overflow-hidden">
@@ -159,7 +124,9 @@ export default function Profile() {
             className="w-full py-3 rounded-xl font-semibold text-white text-lg transition-all duration-300 transform bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:scale-105"
             onClick={() => {
               localStorage.removeItem("token");
-              navigate("/");
+              localStorage.removeItem("user"); // optional if you saved the whole user
+              setUser(null);
+              navigate("/login");
             }}
           >
             Logout

@@ -1,11 +1,17 @@
 // 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Image, MapPin, Tag } from "lucide-react";
 
 const CreatePost = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    // const token = localStorage.getItem("token");
+    // if (!token) {
+    //   navigate("/login"); // redirect immediately if not logged in
+    // }
+  }, [navigate]);
   const [form, setForm] = useState({
     title: "",
     content: "",

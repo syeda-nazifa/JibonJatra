@@ -1,40 +1,128 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Feed from "./pages/Feed";
+// App.js - Corrected routing structure
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
+
+// Pages
 import Posts from "./pages/Posts";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
-
-import AdminRoleUpdate from "./pages/AdminRoleUpdate";
-import AdminUserManagement from "./pages/AdminUserManagement";
-
+import Profile from "./pages/Profile";
 import ProfileEdit from "./pages/ProfileEdit";
+import AdminUserManagement from "./pages/AdminUserManagement";
+import AdminRoleUpdate from "./pages/AdminRoleUpdate";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
+// Protected Route Component
+const ProtectedRoute = ({ children, user, adminOnly = false }) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
-export default function App() {
+  if (adminOnly && user.role !== "admin") {
+    return <Navigate to="/posts" replace />;
+  }
+
+  return children;
+};
+
+function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log("App mounted, checking localStorage...");
+    const savedUser = localStorage.getItem("user");
+    console.log("savedUser from localStorage:", savedUser);
+
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        console.log("Parsed user:", parsedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Error parsing saved user:", error);
+        localStorage.removeItem("user");
+      }
+    }
+    setLoading(false);
+  }, []);
+
+  // Watch for user state changes
+  useEffect(() => {
+    console.log("User state changed:", user);
+  }, [user]);
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log("App rendering with user:", user);
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        {/* Public Routes - Outside Layout */}
+        <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/register" element={<Register />} />
 
-       
-        <Route path="/profile" element={<Profile />} />
-         <Route path="/feed" element={<Feed />} /> 
-         <Route path="/posts" element={<Posts />} />
-        <Route path="/create-post" element={<CreatePost />} />
-        <Route path="/edit-post/:id" element={<EditPost />} />
+
+        {/* Protected Routes - Inside Layout */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute user={user}>
+              <Layout user={user} setUser={setUser} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        >
+          {/* Default redirect */}
+          <Route index element={<Navigate to="/posts" replace />} />
+
+          {/* Main Routes */}
+          <Route path="posts" element={<Posts />} />
+          <Route path="create-post" element={<CreatePost />} />
+          <Route path="edit/:id" element={<EditPost />} />
+          {/* <Route path="profile" element={<Profile />} /> */}
+          {/* <Route path="profile" element={<Profile setUser={setUser} />} /> */}
+          <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
 
 
-        <Route path="/admin/role-update" element={<AdminRoleUpdate />} />
-        <Route path="/admin/users" element={<AdminUserManagement />} />
-
-        <Route path="/profileEdit" element={<ProfileEdit />} />
+          {/* <Route path="profile/edit" element={<ProfileEdit />} /> */}
+          <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
 
 
+          {/* Admin Routes */}
+          <Route
+            path="admin/users"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminUserManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/roles"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminRoleUpdate />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        {/* Catch all - redirect to login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );
 }
+
+export default App;
