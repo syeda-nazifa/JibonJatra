@@ -115,7 +115,7 @@ useEffect(() => {
           {/* Buttons */}
           <button
             className="w-full py-3 rounded-xl font-semibold text-white text-lg transition-all duration-300 transform bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:scale-105"
-            onClick={() => navigate("/profileEdit")}
+            onClick={() => navigate("/profile/edit")}
           >
             Edit Profile
           </button>
