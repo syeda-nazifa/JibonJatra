@@ -7,6 +7,10 @@ import Posts from "./pages/Posts";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 
+import LostFound from "./LostFound"; // adjust path if App.jsx is in src/
+
+
+
 import AdminRoleUpdate from "./pages/AdminRoleUpdate";
 import AdminUserManagement from "./pages/AdminUserManagement";
 
@@ -32,7 +36,7 @@ export default function App() {
         <Route path="/admin/users" element={<AdminUserManagement />} />
 
         <Route path="/profileEdit" element={<ProfileEdit />} />
-
+        <Route path="/lostfound" element={<LostFound />} />
 
       </Routes>
     </Router>
