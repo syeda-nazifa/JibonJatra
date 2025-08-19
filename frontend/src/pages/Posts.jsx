@@ -73,12 +73,12 @@ const Posts = () => {
                 )}
               </div>
 
-              <Link
+              {/* <Link
                 to={`/posts/${post._id}`}
                 className="text-blue-500 font-medium hover:underline"
               >
                 View Details →
-              </Link>
+              </Link> */}
             </div>
           ))}
         </div>
