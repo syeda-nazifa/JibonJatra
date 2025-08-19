@@ -10,8 +10,14 @@ import authRoutes from "./routes/authRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import postRoutes from "./routes/postRoutes.js"; // existing feature
 import adminRoutes from "./routes/adminRoutes.js";
+
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import { itemRouter } from "./routes/itemRoutes.js"; // <-- NEW
+
+
+import announcementRoutes from "./routes/announcementRoutes.js";
+
+
 
 dotenv.config();
 
@@ -36,7 +42,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/admin", adminRoutes);
+
 app.use("/api/items", itemRouter); // <-- NEW: Lost/Found feature
+
+
+app.use("/api/announcements", announcementRoutes);
+
+
 
 // Health check
 app.get("/", (req, res) => res.send("Running"));
