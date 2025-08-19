@@ -1,10 +1,13 @@
+// models/Announcement.js
 import mongoose from "mongoose";
 
 const announcementSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     message: { type: String, required: true },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    publishedDate: { type: Date, default: Date.now }, // auto timestamp
+    eventDate: { type: Date }, // optional
+    location: { type: String }, // optional
   },
   { timestamps: true }
 );

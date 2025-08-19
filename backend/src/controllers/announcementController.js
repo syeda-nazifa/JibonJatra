@@ -14,7 +14,10 @@ export const createAnnouncement = async (req, res) => {
     const announcement = new Announcement({
       title: req.body.title,
       message: req.body.message,
-      createdBy: req.user.id,
+      location: req.body.location,
+      eventDate: req.body.eventDate,           // <-- new field
+      publishedDate: new Date(),               // automatically set when created
+      createdBy: req.user?.id || "admin",
     });
     await announcement.save();
     res.status(201).json(announcement);
@@ -27,7 +30,10 @@ export const updateAnnouncement = async (req, res) => {
   try {
     const announcement = await Announcement.findByIdAndUpdate(
       req.params.id,
-      { title: req.body.title, message: req.body.message },
+      { title: req.body.title,
+        message: req.body.message,
+        location: req.body.location,
+        eventDate: req.body.eventDate, },
       { new: true }
     );
     if (!announcement) return res.status(404).json({ message: "Not found" });
