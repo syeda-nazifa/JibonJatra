@@ -1,3 +1,4 @@
+// Navbar.jsx
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import logo from "../assets/logo.png";
@@ -8,7 +9,6 @@ const Navbar = ({ role, onLogout }) => {
   // Base links for all users
   const BASE_LINKS = [
     { to: "/posts", label: "Posts" },
-    // { to: "/create", label: "New Post" },
     { to: "/profile", label: "Profile" },
     { to: "/feed", label: "Feed" },
     { to: "/market", label: "Market" },
@@ -16,16 +16,34 @@ const Navbar = ({ role, onLogout }) => {
     { to: "/service", label: "Service" },
     { to: "/lostandfound", label: "Lost & Found" },
     { to: "/home-rent", label: "Home Rent" },
+
+    // 👉 New Announcements page (everyone can access)
+    { to: "/announcements", label: "Announcements" },
+  ];
+  const SHARED_LINKS = [
+    { to: "/posts", label: "Posts" },
+    { to: "/profile", label: "Profile" },
+    { to: "/feed", label: "Feed" },
+    { to: "/market", label: "Market" },
+    { to: "/shop", label: "Shop" },
+    { to: "/service", label: "Service" },
+    { to: "/lostandfound", label: "Lost & Found" },
+    { to: "/home-rent", label: "Home Rent" },
+
+    // 👉 New Announcements page (everyone can access)
+    // { to: "/announcements", label: "Announcements" },
   ];
 
   // Extra links for admins
   const ADMIN_LINKS = [
-    { to: "/admin/users", label: "User Management" },
-    { to: "/admin/roles", label: "Role Update" },
+    { to: "/admin/users", label: "Users" },
+    // { to: "/admin/roles", label: "Role Update" },
+    // 👉 If you want a separate admin-only announcement management page:
+    { to: "/admin/announcements", label: "Announcements" },
   ];
 
   // Combine base links with admin links if role is admin
-  const links = role === "admin" ? [...BASE_LINKS, ...ADMIN_LINKS] : BASE_LINKS;
+  const links = role === "admin" ? [...SHARED_LINKS, ...ADMIN_LINKS] : BASE_LINKS;
 
   return (
     <nav className="bg-gray-900 text-white">

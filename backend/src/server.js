@@ -9,6 +9,8 @@ import postRoutes from "./routes/postRoutes.js";  // added this line
 
 import adminRoutes from "./routes/adminRoutes.js";
 
+import announcementRoutes from "./routes/announcementRoutes.js";
+
 
 dotenv.config();
 
@@ -28,6 +30,8 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/posts", postRoutes);  // added this line
 
 app.use("/api/admin", adminRoutes);
+
+app.use("/api/announcements", announcementRoutes);
 
 
 // Health check

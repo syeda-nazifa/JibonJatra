@@ -14,6 +14,9 @@ import AdminRoleUpdate from "./pages/AdminRoleUpdate";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import Announcements from "./pages/Announcements";
+import AdminAnnouncements from "./pages/AdminAnnouncements";
+
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
   if (!user) {
@@ -68,60 +71,65 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        {/* Public Routes - Outside Layout */}
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/register" element={<Register />} />
+  <Routes>
+    {/* Public Routes */}
+    <Route path="/login" element={<Login setUser={setUser} />} />
+    <Route path="/register" element={<Register />} />
 
+    {/* Protected Routes inside Layout */}
+    <Route
+      path="/"
+      element={
+        <ProtectedRoute user={user}>
+          <Layout user={user} setUser={setUser} onLogout={handleLogout} />
+        </ProtectedRoute>
+      }
+    >
+      {/* Default redirect */}
+      <Route index element={<Navigate to="/posts" replace />} />
 
-        {/* Protected Routes - Inside Layout */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute user={user}>
-              <Layout user={user} setUser={setUser} onLogout={handleLogout} />
-            </ProtectedRoute>
-          }
-        >
-          {/* Default redirect */}
-          <Route index element={<Navigate to="/posts" replace />} />
+      {/* Main Routes */}
+      <Route path="posts" element={<Posts />} />
+      <Route path="create-post" element={<CreatePost />} />
+      <Route path="edit/:id" element={<EditPost />} />
+      <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
+      <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
 
-          {/* Main Routes */}
-          <Route path="posts" element={<Posts />} />
-          <Route path="create-post" element={<CreatePost />} />
-          <Route path="edit/:id" element={<EditPost />} />
-          {/* <Route path="profile" element={<Profile />} /> */}
-          {/* <Route path="profile" element={<Profile setUser={setUser} />} /> */}
-          <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
+      {/* Announcements */}
+      <Route path="announcements" element={<Announcements />} />
 
+      {/* Admin Routes */}
+      <Route
+        path="admin/users"
+        element={
+          <ProtectedRoute user={user} adminOnly={true}>
+            <AdminUserManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/roles"
+        element={
+          <ProtectedRoute user={user} adminOnly={true}>
+            <AdminRoleUpdate />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/announcements"
+        element={
+          <ProtectedRoute user={user} adminOnly={true}>
+            <AdminAnnouncements />
+          </ProtectedRoute>
+        }
+      />
+    </Route>
 
-          {/* <Route path="profile/edit" element={<ProfileEdit />} /> */}
-          <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
+    {/* Catch all */}
+    <Route path="*" element={<Navigate to="/login" replace />} />
+  </Routes>
+</Router>
 
-
-          {/* Admin Routes */}
-          <Route
-            path="admin/users"
-            element={
-              <ProtectedRoute user={user} adminOnly={true}>
-                <AdminUserManagement />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="admin/roles"
-            element={
-              <ProtectedRoute user={user} adminOnly={true}>
-                <AdminRoleUpdate />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
-
-        {/* Catch all - redirect to login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </Router>
   );
 }
 
