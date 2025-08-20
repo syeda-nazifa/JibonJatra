@@ -131,6 +131,22 @@ export default function ServiceList({ token, user }) {
                 </button>
             </div>
             )}
+            {user && user.role === "admin" && (
+            <div className="flex gap-2 mt-2">
+                <button
+                onClick={() => navigate(`/services/edit/${s._id}`)}
+                className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
+                >
+                Edit
+                </button>
+                <button
+                onClick={() => handleDelete(s._id)}
+                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                >
+                Delete
+                </button>
+            </div>
+            )}
         </div>
         ))}
       </div>

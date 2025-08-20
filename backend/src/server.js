@@ -12,23 +12,23 @@ import postRoutes from "./routes/postRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import announcementRoutes from "./routes/announcementRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
+import itemRouter from "./routes/itemRoutes.js"; // ✅ Fixed Lost & Found
 import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
-
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "http://localhost:3000" })); // adjust origin if needed
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
 // Connect DB
-await connectDB()
+await connectDB();
 
-// Serve uploaded files (no expiry, permanent storage)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+// Serve uploaded files
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+app.use("/uploads", express.static(path.join(dirname, "../uploads")));
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -37,6 +37,9 @@ app.use("/api/posts", postRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/services", serviceRoutes);
+
+app.use("/api/items", itemRouter); // ✅ Lost & Found
+
 app.use("/api/products", productRoutes);
 
 // Health check
