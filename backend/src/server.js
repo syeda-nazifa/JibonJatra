@@ -12,6 +12,7 @@ import postRoutes from "./routes/postRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import announcementRoutes from "./routes/announcementRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/products", productRoutes);
 
 // Health check
 app.get("/", (req, res) => res.send("🚀 Running"));
