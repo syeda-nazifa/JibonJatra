@@ -41,12 +41,12 @@ const UserAnnouncements = () => {
             <div className="flex flex-wrap gap-2 text-sm text-gray-500">
               {a.publishedDate && (
                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex items-center gap-1">
-                  📰 {new Date(a.publishedDate).toLocaleDateString()}
+                  Publish: {new Date(a.publishedDate).toLocaleDateString()}
                 </span>
               )}
               {a.eventDate && (
                 <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full flex items-center gap-1">
-                  📅 {new Date(a.eventDate).toLocaleDateString()}
+                  Event Date: {new Date(a.eventDate).toLocaleDateString()}
                 </span>
               )}
               {a.location && (

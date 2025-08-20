@@ -1,38 +1,59 @@
-import { Item } from "../models/Item.js";
+import Item from "../models/Item.js";
 
-// POST /api/items
-export const createItem = async (req, res) => {
-  const { type, title, description, location, contact } = req.body;
-  if (!type || !title || !description) {
-    return res.status(400).json({ message: "type, title and description are required" });
+// GET all items (with filters)
+export const getItems = async (req, res) => {
+  try {
+    const { type, search } = req.query;
+    const filter = {};
+    if (type) filter.type = type;
+    if (search) filter.title = { $regex: search, $options: "i" };
+
+    const items = await Item.find(filter).sort({ createdAt: -1 });
+    res.json({ items });
+  } catch (err) {
+    console.error("Error fetching items:", err);
+    res.status(500).json({ message: "Failed to fetch items" });
   }
-  const image = req.file ? `/uploads/${req.file.filename}` : null;
-
-  const doc = await Item.create({ type, title, description, image, location, contact });
-  res.status(201).json(doc);
 };
 
-// GET /api/items?type=lost|found&search=cat&page=1&limit=10
-export const listItems = async (req, res) => {
-  const { type, search = "", page = 1, limit = 10 } = req.query;
+// CREATE item
+export const createItem = async (req, res) => {
+  try {
+    const { title, description, type } = req.body;
+    if (!title || !description || !type) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
-  const q = {};
-  if (type && ["lost", "found"].includes(type)) q.type = type;
-  if (search) q.$text = { $search: search };
+    const newItem = new Item({
+      title,
+      description,
+      type,
+      user: req.user.id, // ✅ from verifyUser
+      image: req.file ? `/uploads/${req.file.filename}` : null,
+    });
 
-  const skip = (Number(page) - 1) * Number(limit);
-  const [items, total] = await Promise.all([
-    Item.find(q).sort({ createdAt: -1 }).skip(skip).limit(Number(limit)),
-    Item.countDocuments(q)
-  ]);
-
-  res.json({ items, total, page: Number(page), pages: Math.ceil(total / Number(limit)) });
+    const saved = await newItem.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    console.error("Error creating item:", err);
+    res.status(500).json({ message: "Failed to create item" });
+  }
 };
 
-// DELETE /api/items/:id
+// DELETE item
 export const deleteItem = async (req, res) => {
-  const { id } = req.params;
-  const doc = await Item.findByIdAndDelete(id);
-  if (!doc) return res.status(404).json({ message: "Item not found" });
-  res.json({ message: "Deleted", id });
+  try {
+    const item = await Item.findById(req.params.id);
+    if (!item) return res.status(404).json({ message: "Item not found" });
+
+    if (item.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized to delete this item" });
+    }
+
+    await item.deleteOne();
+    res.json({ message: "Item deleted" });
+  } catch (err) {
+    console.error("Error deleting item:", err);
+    res.status(500).json({ message: "Failed to delete item" });
+  }
 };

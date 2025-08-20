@@ -1,5 +1,4 @@
-export default function ItemCard({ item, onDelete }) {
-  // Use environment variable for backend base URL, or fallback to localhost
+export default function ItemCard({ item, onDelete, currentUserId }) {
   const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
   return (
@@ -18,12 +17,15 @@ export default function ItemCard({ item, onDelete }) {
         {item.location && <p className="text-xs text-gray-600 mt-1">📍 {item.location}</p>}
         {item.contact && <p className="text-xs text-gray-600">☎ {item.contact}</p>}
       </div>
-      <button
-        onClick={() => onDelete?.(item._id)}
-        className="text-red-600 text-sm"
-      >
-        Delete
-      </button>
+      {/* Only show delete button if current user is the uploader */}
+      {currentUserId && currentUserId === item.user && (
+        <button
+          onClick={() => onDelete?.(item._id)}
+          className="text-red-600 text-sm hover:underline"
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 }

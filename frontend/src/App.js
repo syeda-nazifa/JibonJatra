@@ -9,7 +9,7 @@ import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 
 
-import LostFound from "./LostFound"; // adjust path if App.jsx is in src/
+import LostFound from "./pages/LostFound"; // adjust path if App.jsx is in src/
 
 
 
@@ -27,6 +27,10 @@ import Register from "./pages/Register";
 
 import Announcements from "./pages/Announcements";
 import AdminAnnouncements from "./pages/AdminAnnouncements";
+
+import ServiceList from "./pages/ServiceList";
+import ServiceCreate from "./pages/ServiceCreate";
+import ServiceEdit from "./pages/ServiceEdit";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
@@ -82,36 +86,42 @@ function App() {
 
   return (
     <Router>
-  <Routes>
-    {/* Public Routes */}
-    <Route path="/login" element={<Login setUser={setUser} />} />
-    <Route path="/register" element={<Register />} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/register" element={<Register />} />
 
-    {/* Protected Routes inside Layout */}
-    <Route
-      path="/"
-      element={
-        <ProtectedRoute user={user}>
-          <Layout user={user} setUser={setUser} onLogout={handleLogout} />
-        </ProtectedRoute>
-      }
-    >
-      {/* Default redirect */}
-      <Route index element={<Navigate to="/posts" replace />} />
+        {/* Protected Routes inside Layout */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute user={user}>
+              <Layout user={user} setUser={setUser} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        >
+          {/* Default redirect */}
+          <Route index element={<Navigate to="/posts" replace />} />
 
-      {/* Main Routes */}
-      <Route path="posts" element={<Posts />} />
-      <Route path="create-post" element={<CreatePost />} />
-      <Route path="edit/:id" element={<EditPost />} />
-      <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
-      <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
+          {/* Main Routes */}
+          <Route path="posts" element={<Posts />} />
+          <Route path="create-post" element={<CreatePost />} />
+          <Route path="edit/:id" element={<EditPost />} />
+          <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
+          <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
+          <Route path="lostfound" element={<LostFound user={user} />} />
 
-      {/* Announcements */}
-      <Route path="announcements" element={<Announcements />} />
+          {/* Announcements */}
+          <Route path="announcements" element={<Announcements />} />
 
+          <Route path="services" element={<ServiceList token={user?.token} user={user} />} />
+          <Route
+            path="services/create"
+            element={<ServiceCreate token={user?.token} user={user} />}
+          />
 
-        <Route path="/profileEdit" element={<ProfileEdit />} />
-        <Route path="/lostfound" element={<LostFound />} />
+          <Route path="services/edit/:id" element={<ServiceEdit token={user?.token} user={user} />} />
+
 
       {/* Admin Routes */}
       <Route
@@ -140,10 +150,10 @@ function App() {
       />
     </Route>
 
-    {/* Catch all */}
-    <Route path="*" element={<Navigate to="/login" replace />} />
-  </Routes>
-</Router>
+        {/* Catch all */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </Router>
 
   );
 }

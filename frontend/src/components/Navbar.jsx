@@ -13,8 +13,11 @@ const Navbar = ({ role, onLogout }) => {
     { to: "/feed", label: "Feed" },
     { to: "/market", label: "Market" },
     { to: "/shop", label: "Shop" },
-    { to: "/service", label: "Service" },
-    { to: "/lostandfound", label: "Lost & Found" },
+
+
+    { to: "/services", label: "Service" },
+    { to: "/lostfound", label: "Lost & Found" },
+
     { to: "/home-rent", label: "Home Rent" },
 
     // 👉 New Announcements page (everyone can access)
@@ -26,8 +29,8 @@ const Navbar = ({ role, onLogout }) => {
     { to: "/feed", label: "Feed" },
     { to: "/market", label: "Market" },
     { to: "/shop", label: "Shop" },
-    { to: "/service", label: "Service" },
-    { to: "/lostandfound", label: "Lost & Found" },
+    { to: "/services", label: "Service" },
+    { to: "/lostfound", label: "Lost & Found" },
     { to: "/home-rent", label: "Home Rent" },
 
     // 👉 New Announcements page (everyone can access)

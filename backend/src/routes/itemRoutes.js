@@ -1,15 +1,20 @@
-// itemRoute.js
-import { Router } from "express";
-import { createItem, listItems, deleteItem } from "../controllers/itemController.js";
-import { upload } from "../utils/multer.js";
+import express from "express";
+import multer from "multer";
+import { createItem, getItems, deleteItem } from "../controllers/itemController.js";
+import verifyUser from "../middleware/verifyUser.js";
 
-export const itemRouter = Router();
+const router = express.Router();
 
-// ➤ Get all items
-itemRouter.get("/", listItems);
+// Multer storage for uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+});
+const upload = multer({ storage });
 
-// ➤ Create lost/found item with image
-itemRouter.post("/", upload.single("image"), createItem);
+// Routes
+router.get("/", getItems); // ✅ GET /api/items
+router.post("/", verifyUser, upload.single("image"), createItem); // ✅ POST /api/items
+router.delete("/:id", verifyUser, deleteItem); // ✅ DELETE /api/items/:id
 
-// ➤ Delete item
-itemRouter.delete("/:id", deleteItem);
+export default router;
