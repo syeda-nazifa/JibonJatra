@@ -1,4 +1,3 @@
-// App.js - Corrected routing structure
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
@@ -24,24 +23,20 @@ import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminRoleUpdate from "./pages/AdminRoleUpdate";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
 import Announcements from "./pages/Announcements";
 import AdminAnnouncements from "./pages/AdminAnnouncements";
-
 import ServiceList from "./pages/ServiceList";
 import ServiceCreate from "./pages/ServiceCreate";
 import ServiceEdit from "./pages/ServiceEdit";
+import Products from "./pages/Products";
+import ProductNew from "./pages/ProductNew";
+import ProductEdit from "./pages/ProductEdit";
+import Shop from "./pages/Shop"; // <-- Shop page
 
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (adminOnly && user.role !== "admin") {
-    return <Navigate to="/posts" replace />;
-  }
-
+  if (!user) return <Navigate to="/login" replace />;
+  if (adminOnly && user.role !== "admin") return <Navigate to="/posts" replace />;
   return children;
 };
 
@@ -50,39 +45,23 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("App mounted, checking localStorage...");
     const savedUser = localStorage.getItem("user");
-    console.log("savedUser from localStorage:", savedUser);
-
     if (savedUser) {
       try {
-        const parsedUser = JSON.parse(savedUser);
-        console.log("Parsed user:", parsedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("Error parsing saved user:", error);
+        setUser(JSON.parse(savedUser));
+      } catch {
         localStorage.removeItem("user");
       }
     }
     setLoading(false);
   }, []);
 
-  // Watch for user state changes
-  useEffect(() => {
-    console.log("User state changed:", user);
-  }, [user]);
-
   const handleLogout = () => {
-    console.log("Logging out...");
     localStorage.removeItem("user");
     setUser(null);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  console.log("App rendering with user:", user);
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Router>
@@ -100,7 +79,6 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* Default redirect */}
           <Route index element={<Navigate to="/posts" replace />} />
 
           {/* Main Routes */}
@@ -110,51 +88,54 @@ function App() {
           <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
           <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
           <Route path="lostfound" element={<LostFound user={user} />} />
-
           {/* Announcements */}
           <Route path="announcements" element={<Announcements />} />
+          
+          <Route path="shop" element={<Shop user={user} />} />
 
+          {/* Services */}
           <Route path="services" element={<ServiceList token={user?.token} user={user} />} />
-          <Route
-            path="services/create"
-            element={<ServiceCreate token={user?.token} user={user} />}
-          />
-
+          <Route path="services/create" element={<ServiceCreate token={user?.token} user={user} />} />
           <Route path="services/edit/:id" element={<ServiceEdit token={user?.token} user={user} />} />
 
+          {/* Admin Routes */}
+          <Route
+            path="admin/users"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminUserManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/roles"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminRoleUpdate />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/announcements"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminAnnouncements />
+              </ProtectedRoute>
+            }
+          />
+          </Route>
+        {/* Products */}
+          <Route path="products" element={<Products />} />
+          <Route path="products/new" element={<ProductNew />} />
+          <Route path="products/:id/edit" element={<ProductEdit />} />
 
-      {/* Admin Routes */}
-      <Route
-        path="admin/users"
-        element={
-          <ProtectedRoute user={user} adminOnly={true}>
-            <AdminUserManagement />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="admin/roles"
-        element={
-          <ProtectedRoute user={user} adminOnly={true}>
-            <AdminRoleUpdate />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="admin/announcements"
-        element={
-          <ProtectedRoute user={user} adminOnly={true}>
-            <AdminAnnouncements />
-          </ProtectedRoute>
-        }
-      />
-    </Route>
+  
+
 
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
-
   );
 }
 

@@ -48,9 +48,9 @@ export default function LostFound() {
 
   return (
     <main className="flex-1 p-6 bg-gray-100 min-h-screen">
-      <header className="flex justify-end mb-4">
+      {/* <header className="flex justify-end mb-4">
         <button className="bg-red-700 text-white px-4 py-2 rounded">User Profile</button>
-      </header>
+      </header> */}
 
       {/* Create item form */}
       <div className="mb-4 max-w-3xl">

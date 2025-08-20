@@ -8,7 +8,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["resident", "shopkeeper", "service provider", "homeowner", "admin"],
     default: "resident"
-  }
+  },
+  phone: { type: String, trim: true },
+  address: { type: String, trim: true },
 });
 
 export default mongoose.model("User", userSchema);

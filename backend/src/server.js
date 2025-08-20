@@ -13,6 +13,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import announcementRoutes from "./routes/announcementRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import itemRouter from "./routes/itemRoutes.js"; // ✅ Fixed Lost & Found
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -36,7 +37,10 @@ app.use("/api/posts", postRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/services", serviceRoutes);
+
 app.use("/api/items", itemRouter); // ✅ Lost & Found
+
+app.use("/api/products", productRoutes);
 
 // Health check
 app.get("/", (req, res) => res.send("🚀 Running"));

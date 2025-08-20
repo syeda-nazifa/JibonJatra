@@ -5,28 +5,40 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-//post - register
+// Register route
 router.post("/register", async (req, res) => {
-  const { name, email, password, role } = req.body;
-  console.log(role);
-  if (!name || !email || !password)
+  const { name, email, password, role, phone, address } = req.body;
+
+  if (!name || !email || !password) {
     return res.status(400).json({ message: "Name, email and password are required." });
+  }
 
   try {
     // Prevent duplicate email
     const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: "Email already in use." });
+    if (existing) {
+      return res.status(400).json({ message: "Email already in use." });
+    }
 
     // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
     // Create user
-    const user = await User.create({ name, email, password: hashed, role });
-
-    // Create JWT (keep minimal info)
-    const token = jwt.sign({ id: user._id.toString(), role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: "1d"
+    const user = await User.create({
+      name,
+      email,
+      password: hashed,
+      role: role || "resident", // default role
+      phone: phone || "",
+      address: address || "",
     });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id.toString(), role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
     return res.status(201).json({ token });
   } catch (err) {
@@ -35,22 +47,30 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// post -login
-
+// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ message: "Email and password required." });
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password required." });
+  }
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Email Not Found" });
+    if (!user) {
+      return res.status(400).json({ message: "Email not found" });
+    }
 
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(400).json({ message: "Password Didn't Match" });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(400).json({ message: "Password didn't match" });
+    }
 
-    const token = jwt.sign({ id: user._id.toString(), role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: "1d"
-    });
+    const token = jwt.sign(
+      { id: user._id.toString(), role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
     return res.json({ token });
   } catch (err) {
