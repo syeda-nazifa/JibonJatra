@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback} from "react";
 import { api } from "../apiClient"; // frontend apiClient
 import ItemFrom from "../components/ItemFrom";
 import ItemCard from "../components/ItemCard";
@@ -10,22 +10,35 @@ export default function LostFound() {
   const [loading, setLoading] = useState(false);
   const currentUserId = localStorage.getItem("userId"); // logged-in user ID
 
-  const fetchItems = async () => {
-    setLoading(true);
-    try {
-      const { data } = await api.get("/api/items", { params: { type, search } });
-      setItems(data.items || []);
-    } catch (err) {
-      console.error("Failed to fetch items:", err);
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchItems = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const { data } = await api.get("/api/items", { params: { type, search } });
+  //     setItems(data.items || []);
+  //   } catch (err) {
+  //     console.error("Failed to fetch items:", err);
+  //     setItems([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+const fetchItems = useCallback(async () => {
+  setLoading(true);
+  try {
+    const { data } = await api.get("/api/items", { params: { type, search } });
+    setItems(data.items || []);
+  } catch (err) {
+    console.error("Failed to fetch items:", err);
+    setItems([]);
+  } finally {
+    setLoading(false);
+  }
+}, [type, search]);
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   const handleCreated = (doc) => setItems((prev) => [doc, ...prev]);
 

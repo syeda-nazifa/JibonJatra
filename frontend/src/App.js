@@ -33,6 +33,10 @@ import ProductNew from "./pages/ProductNew";
 import ProductEdit from "./pages/ProductEdit";
 import Shop from "./pages/Shop"; // <-- Shop page
 
+import MarketList from "./pages/MarketList";
+import MarketCreate from "./pages/MarketCreate";
+import MarketEdit from "./pages/MarketEdit";
+
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
   if (!user) return <Navigate to="/login" replace />;
@@ -97,6 +101,9 @@ function App() {
           <Route path="services" element={<ServiceList token={user?.token} user={user} />} />
           <Route path="services/create" element={<ServiceCreate token={user?.token} user={user} />} />
           <Route path="services/edit/:id" element={<ServiceEdit token={user?.token} user={user} />} />
+          <Route path="market" element={<MarketList user={user} />} />
+          <Route path="market/create" element={<MarketCreate user={user} />} />
+          <Route path="market/edit/:id" element={<MarketEdit user={user} />} />
 
           {/* Admin Routes */}
           <Route
