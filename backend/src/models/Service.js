@@ -23,8 +23,19 @@ const serviceSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    ratingAverage: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5
+    },
+    ratingCount: {
+      type: Number,
+      default: 0
+    }
   },
   { timestamps: true }
 );
 
 export default mongoose.model("Service", serviceSchema);
+

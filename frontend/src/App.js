@@ -6,7 +6,18 @@ import Layout from "./components/Layout";
 import Posts from "./pages/Posts";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+
+
+import LostFound from "./pages/LostFound"; // adjust path if App.jsx is in src/
+
+
+
+// import AdminRoleUpdate from "./pages/AdminRoleUpdate";
+// import AdminUserManagement from "./pages/AdminUserManagement"
+
+
 import Profile from "./pages/Profile";
+
 import ProfileEdit from "./pages/ProfileEdit";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminRoleUpdate from "./pages/AdminRoleUpdate";
@@ -22,6 +33,15 @@ import ProductNew from "./pages/ProductNew";
 import ProductEdit from "./pages/ProductEdit";
 import Shop from "./pages/Shop"; // <-- Shop page
 
+import MarketList from "./pages/MarketList";
+import MarketCreate from "./pages/MarketCreate";
+import MarketEdit from "./pages/MarketEdit";
+
+import ServiceDetail from "./pages/ServiceDetail";
+
+// const [token, setToken] = useState(localStorage.getItem('token'));
+// const [user, setUser] = useState(null);
+
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
   if (!user) return <Navigate to="/login" replace />;
@@ -30,6 +50,8 @@ const ProtectedRoute = ({ children, user, adminOnly = false }) => {
 };
 
 function App() {
+  const [token] = useState(localStorage.getItem('token'));
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -76,26 +98,54 @@ function App() {
           <Route path="edit/:id" element={<EditPost />} />
           <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
           <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
+          <Route path="lostfound" element={<LostFound user={user} />} />
+          {/* Announcements */}
           <Route path="announcements" element={<Announcements />} />
+
+          <Route path="shop" element={<Shop user={user} />} />
 
           {/* Services */}
           <Route path="services" element={<ServiceList token={user?.token} user={user} />} />
           <Route path="services/create" element={<ServiceCreate token={user?.token} user={user} />} />
           <Route path="services/edit/:id" element={<ServiceEdit token={user?.token} user={user} />} />
+          <Route path="market" element={<MarketList user={user} />} />
+          <Route path="market/create" element={<MarketCreate user={user} />} />
+          <Route path="market/edit/:id" element={<MarketEdit user={user} />} />
+          <Route path="/services/:id" element={<ServiceDetail token={token} user={user} />} />
 
           {/* Admin Routes */}
-          <Route path="admin/users" element={<ProtectedRoute user={user} adminOnly><AdminUserManagement /></ProtectedRoute>} />
-          <Route path="admin/roles" element={<ProtectedRoute user={user} adminOnly><AdminRoleUpdate /></ProtectedRoute>} />
-          <Route path="admin/announcements" element={<ProtectedRoute user={user} adminOnly><AdminAnnouncements /></ProtectedRoute>} />
-
-          {/* Products */}
-          <Route path="products" element={<Products />} />
-          <Route path="products/new" element={<ProductNew />} />
-          <Route path="products/:id/edit" element={<ProductEdit />} />
-
-          {/* Shop */}
-          <Route path="shop" element={<Shop user={user} />} />
+          <Route
+            path="admin/users"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminUserManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/roles"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminRoleUpdate />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/announcements"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminAnnouncements />
+              </ProtectedRoute>
+            }
+          />
         </Route>
+        {/* Products */}
+        <Route path="products" element={<Products />} />
+        <Route path="products/new" element={<ProductNew />} />
+        <Route path="products/:id/edit" element={<ProductEdit />} />
+
+
+
 
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/login" replace />} />
