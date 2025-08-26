@@ -17,6 +17,8 @@ import productRoutes from "./routes/productRoutes.js";
 // import marketPriceRoutes from "./routes/marketPriceRoutes.js";
 import marketRoutes from "./routes/marketRoutes.js";
 
+import reviewRoutes from './routes/reviewRoutes.js'; 
+
 dotenv.config();
 const app = express();
 
@@ -46,6 +48,9 @@ app.use("/api/items", itemRouter); // ✅ Lost & Found
 app.use("/api/products", productRoutes);
 
 app.use("/api/market", marketRoutes);
+
+app.use('/api/reviews', reviewRoutes);
+
 // Health check
 app.get("/", (req, res) => res.send("🚀 Running"));
 

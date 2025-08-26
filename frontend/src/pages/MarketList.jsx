@@ -1,80 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { fetchMarketItems, deleteMarketItemAPI } from "../api/market";
-// import { useNavigate } from "react-router-dom";
-
-// const MarketList = ({ user }) => {
-//   const [items, setItems] = useState([]);
-//   const navigate = useNavigate();
-
-//   const loadItems = async () => {
-//     const res = await fetchMarketItems();
-//     setItems(res.data);
-//   };
-
-//   useEffect(() => {
-//     loadItems();
-//   }, []);
-
-//   const handleDelete = async (id) => {
-//     if (!window.confirm("Are you sure?")) return;
-//     await deleteMarketItemAPI(id, user.token);
-//     loadItems();
-//   };
-
-//   return (
-//     <div className="p-4">
-//       <div className="flex justify-between items-center mb-4">
-//         <h1 className="text-2xl font-bold">Market Items</h1>
-//         {user?.role === "market_head" && (
-//           <button
-//             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-//             onClick={() => navigate("/market/create")}
-//           >
-//             Add Item
-//           </button>
-//         )}
-//       </div>
-
-//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-//         {items.map((item) => (
-//           <div key={item._id} className="border rounded shadow p-4 flex flex-col items-center">
-//             {item.image && (
-//               <img
-//                 src={`http://localhost:5000${item.image}`}
-//                 alt={item.name}
-//                 className="w-full h-40 object-cover rounded mb-2"
-//               />
-//             )}
-//             <h3 className="text-lg font-semibold">{item.name}</h3>
-//             <p>Price: <span className="font-medium">{item.price}</span></p>
-//             <p>Location: {item.location}</p>
-//             <p>Source: {item.source}</p>
-
-//             {(user?.role === "admin" ||
-//               (user?.role === "market_head" && user.id === item.createdBy)) && (
-//               <div className="flex mt-2 space-x-2">
-//                 <button
-//                   className="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500"
-//                   onClick={() => navigate(`/market/edit/${item._id}`)}
-//                 >
-//                   Edit
-//                 </button>
-//                 <button
-//                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-//                   onClick={() => handleDelete(item._id)}
-//                 >
-//                   Delete
-//                 </button>
-//               </div>
-//             )}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MarketList;
 import React, { useEffect, useState } from "react";
 import { fetchMarketItems, deleteMarketItemAPI } from "../api/market";
 import { useNavigate } from "react-router-dom";
@@ -84,6 +7,7 @@ const MarketList = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterLocation, setFilterLocation] = useState("all");
+  const [locationInput, setLocationInput] = useState("");
   const navigate = useNavigate();
 
   const loadItems = async () => {
@@ -117,7 +41,13 @@ const MarketList = ({ user }) => {
   const filteredItems = items.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.source.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLocation = filterLocation === "all" || item.location === filterLocation;
+    
+    // If "all" is selected, show all locations
+    // If a custom location is typed, filter by that text
+    const matchesLocation = filterLocation === "all" || 
+                           (filterLocation === "custom" && item.location.toLowerCase().includes(locationInput.toLowerCase())) ||
+                           item.location === filterLocation;
+    
     return matchesSearch && matchesLocation;
   });
 
@@ -178,17 +108,35 @@ const MarketList = ({ user }) => {
             
             <div>
               <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Filter by Location</label>
-              <select
-                id="location"
-                className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                value={filterLocation}
-                onChange={(e) => setFilterLocation(e.target.value)}
-              >
-                <option value="all">All Locations</option>
-                {locations.map(location => (
-                  <option key={location} value={location}>{location}</option>
-                ))}
-              </select>
+              <div className="flex flex-col space-y-2">
+                <select
+                  id="location"
+                  className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  value={filterLocation}
+                  onChange={(e) => {
+                    setFilterLocation(e.target.value);
+                    if (e.target.value !== "custom") {
+                      setLocationInput("");
+                    }
+                  }}
+                >
+                  <option value="all">All Locations</option>
+                  <option value="custom">Custom filter...</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
+                
+                {filterLocation === "custom" && (
+                  <input
+                    type="text"
+                    className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    placeholder="Type location to filter..."
+                    value={locationInput}
+                    onChange={(e) => setLocationInput(e.target.value)}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
