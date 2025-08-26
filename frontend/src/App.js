@@ -36,6 +36,7 @@ import Shop from "./pages/Shop"; // <-- Shop page
 import MarketList from "./pages/MarketList";
 import MarketCreate from "./pages/MarketCreate";
 import MarketEdit from "./pages/MarketEdit";
+import Feed from './pages/Feed';
 
 import ServiceDetail from "./pages/ServiceDetail";
 
@@ -112,6 +113,7 @@ function App() {
           <Route path="market/create" element={<MarketCreate user={user} />} />
           <Route path="market/edit/:id" element={<MarketEdit user={user} />} />
           <Route path="/services/:id" element={<ServiceDetail token={token} user={user} />} />
+          <Route path="/feed" element={<Feed />} />
 
           {/* Admin Routes */}
           <Route
