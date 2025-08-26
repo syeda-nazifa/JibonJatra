@@ -19,6 +19,8 @@ import marketRoutes from "./routes/marketRoutes.js";
 
 import reviewRoutes from './routes/reviewRoutes.js'; 
 
+import feedRoutes from './routes/feedRoutes.js';
+
 dotenv.config();
 const app = express();
 
@@ -50,6 +52,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/market", marketRoutes);
 
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/feed', feedRoutes);
 
 // Health check
 app.get("/", (req, res) => res.send("🚀 Running"));
