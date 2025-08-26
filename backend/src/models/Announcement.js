@@ -8,6 +8,11 @@ const announcementSchema = new mongoose.Schema(
     publishedDate: { type: Date, default: Date.now }, // auto timestamp
     eventDate: { type: Date }, // optional
     location: { type: String }, // optional
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
   },
   { timestamps: true }
 );
