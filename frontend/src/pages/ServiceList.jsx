@@ -1,163 +1,11 @@
-// // import { useEffect, useState } from "react";
-// // import { fetchServices, deleteServiceAPI } from "../api/services";
 
-// // export default function ServiceList({ token, user }) {
-// //   const [services, setServices] = useState([]);
-
-// //   const loadServices = async () => {
-// //     const res = await fetchServices();
-// //     setServices(res.data.items);
-// //   };
-
-// //   const handleDelete = async (id) => {
-// //     if (!window.confirm("Are you sure?")) return;
-// //     await deleteServiceAPI(id, token);
-// //     loadServices();
-// //   };
-
-// //   useEffect(() => {
-// //     loadServices();
-// //   }, []);
-
-// //   return (
-// //     <div className="p-4">
-// //       <h2 className="text-2xl font-bold mb-4">All Services</h2>
-// //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-// //         {services.map((s) => (
-// //           <div key={s._id} className="border p-3 rounded shadow">
-// //             <img
-// //               src={s.servicePicture || "/logo.png"}
-// //               alt={s.serviceName}
-// //               className="w-full h-48 object-cover mb-2"
-// //             />
-// //             <h3 className="font-bold">{s.serviceName}</h3>
-// //             <p>{s.serviceDetail}</p>
-// //             <p>Price: {s.servicePrice}</p>
-// //             <p>Type: {s.serviceType}</p>
-// //             <p>Provider: {s.providerName}</p>
-// //             <p>Contact: {s.providerContact}</p>
-// //             <p>Location: {s.location}</p>
-// //             {(user && (user.role === "admin" || user.id === s.createdBy._id)) && (
-// //               <div className="flex gap-2 mt-2">
-// //                 <button
-// //                   onClick={() => handleDelete(s._id)}
-// //                   className="bg-red-500 text-white px-2 py-1 rounded"
-// //                 >
-// //                   Delete
-// //                 </button>
-// //               </div>
-// //             )}
-// //           </div>
-// //         ))}
-// //       </div>
-// //     </div>
-// //   );
-// // }
-
-
-// import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { fetchServices, deleteServiceAPI } from "../api/services";
-
-// export default function ServiceList({ token, user }) {
-//   const [services, setServices] = useState([]);
-//   const navigate = useNavigate();
-
-
-//   const loadServices = async () => {
-//     try {
-//       const res = await fetchServices();
-//       setServices(res.data.items);
-//     } catch (err) {
-//       console.error("Error loading services:", err);
-//     }
-//   };
-
-//   const handleDelete = async (id) => {
-//     if (!window.confirm("Are you sure?")) return;
-//     try {
-//       await deleteServiceAPI(id, token);
-//       setServices((prev) => prev.filter((s) => s._id !== id));
-//     } catch (err) {
-//       console.error("Failed to delete", err);
-//     }
-//   };
-
-//   useEffect(() => {
-//     loadServices();
-//   }, []);
-
-//   return (
-//     <div className="p-4">
-//       <h2 className="text-2xl font-bold mb-4">All Services</h2>
-//       {user && user.role === "service provider" && (
-//     <div className="mb-4">
-//       <button
-//         onClick={() => navigate("/services/create")}
-//         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-//       >
-//         Create Service
-//       </button>
-//     </div>
-//   )}
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//         {services.map((s) => (
-//           <div key={s._id} className="border p-3 rounded shadow">
-//             <img
-//               src={`http://localhost:5000${s.servicePicture}` || "/logo.png"}
-//               alt={s.serviceName}
-//               className="w-full h-48 object-cover mb-2"
-//             />
-//             <h3 className="font-bold">{s.serviceName}</h3>
-//             <p>{s.serviceDetail}</p>
-//             <p>Price: {s.servicePrice}</p>
-//             <p>Type: {s.serviceType}</p>
-//             <p>Provider: {s.providerName}</p>
-//             <p>Contact: {s.providerContact}</p>
-//             <p>Location: {s.location}</p>
-//             {user && user.role === "service provider" && (user.id === s.createdBy?._id || user.id === s.createdBy) && (
-//             <div className="flex gap-2 mt-2">
-//                 <button
-//                 onClick={() => navigate(`/services/edit/${s._id}`)}
-//                 className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
-//                 >
-//                 Edit
-//                 </button>
-//                 <button
-//                 onClick={() => handleDelete(s._id)}
-//                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-//                 >
-//                 Delete
-//                 </button>
-//             </div>
-//             )}
-//             {user && user.role === "admin" && (
-//             <div className="flex gap-2 mt-2">
-//                 <button
-//                 onClick={() => navigate(`/services/edit/${s._id}`)}
-//                 className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
-//                 >
-//                 Edit
-//                 </button>
-//                 <button
-//                 onClick={() => handleDelete(s._id)}
-//                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-//                 >
-//                 Delete
-//                 </button>
-//             </div>
-//             )}
-//         </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
 
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchServices, deleteServiceAPI } from "../api/services";
+// import Rating from "../components/Rating";
+
 
 export default function ServiceList({ token, user }) {
   const [services, setServices] = useState([]);
@@ -362,7 +210,12 @@ export default function ServiceList({ token, user }) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredServices.map((s) => (
-              <div key={s._id} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col">
+              // <div key={s._id} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col">
+              <div 
+                key={s._id} 
+                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col cursor-pointer"
+                onClick={() => navigate(`/services/${s._id}`)}
+>
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={s.servicePicture ? `http://localhost:5000${s.servicePicture}` : "/logo.png"}
@@ -384,6 +237,15 @@ export default function ServiceList({ token, user }) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <span className="font-medium text-lg text-blue-700">${s.servicePrice}</span>
+                    </div>
+
+                    <div className="flex items-center">
+                      <svg className="h-5 w-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                      <span className="text-gray-600">
+                        {s.ratingAverage || 0} ({s.ratingCount || 0} reviews)
+                      </span>
                     </div>
                     
                     <div className="flex items-center">
@@ -416,7 +278,10 @@ export default function ServiceList({ token, user }) {
                   ) && (
                     <div className="flex space-x-2 pt-3 border-t border-gray-100">
                       <button
-                        onClick={() => navigate(`/services/edit/${s._id}`)}
+                        onClick={(e) => {
+                          e.stopPropagation();  // ← Prevent event from bubbling up
+                          navigate(`/services/edit/${s._id}`);
+                        }}
                         className="flex-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center"
                       >
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -425,7 +290,10 @@ export default function ServiceList({ token, user }) {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(s._id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(s._id);
+                        }}
                         className="flex-1 bg-red-100 hover:bg-red-200 text-red-800 font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center"
                       >
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -444,3 +312,4 @@ export default function ServiceList({ token, user }) {
     </div>
   );
 }
+
