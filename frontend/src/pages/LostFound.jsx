@@ -26,7 +26,7 @@ export default function LostFound() {
 const fetchItems = useCallback(async () => {
   setLoading(true);
   try {
-    const { data } = await api.get("/items", { params: { type, search } });
+    const { data } = await api.get("/api/items", { params: { type, search } });
     setItems(data.items || []);
   } catch (err) {
     console.error("Failed to fetch items:", err);
@@ -45,7 +45,7 @@ const fetchItems = useCallback(async () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await api.delete(`/items/${id}`, {
+      await api.delete(`/api/items/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setItems((prev) => prev.filter(i => i._id !== id));
