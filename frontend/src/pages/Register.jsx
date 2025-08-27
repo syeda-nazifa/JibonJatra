@@ -227,6 +227,7 @@ export default function Register() {
                 <option value="shopkeeper">🏪 Shopkeeper</option>
                 <option value="service provider">🔧 Service Provider</option>
                 <option value="homeowner">🏡 Home Owner</option>
+                <option value="market_head">🛒 Market Head</option>
                 <option value="admin">👑 Admin</option>
               </select>
               {formData.role && (

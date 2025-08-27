@@ -103,7 +103,7 @@ export default function Login({ setUser }) {
       localStorage.setItem("user", JSON.stringify(loggedInUser));
       setUser(loggedInUser);
 
-      navigate(loggedInUser.role === "admin" ? "/admin/users" : "/profile");
+      navigate(loggedInUser.role === "admin" ? "/feed" : "/feed");
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     }

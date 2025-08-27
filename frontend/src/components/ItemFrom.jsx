@@ -23,7 +23,7 @@ export default function ItemFrom({ onCreated }) {
       if (image) fd.append("image", image);
 
       const token = localStorage.getItem("token");
-      const { data } = await api.post("/api/items", fd, {
+      const { data } = await api.post("/items", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
