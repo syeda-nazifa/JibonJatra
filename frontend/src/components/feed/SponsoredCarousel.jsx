@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { sponsoredAPI } from '../../api/sponsored';
+// import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SponsoredCarousel = () => {
   const [sponsoredPosts, setSponsoredPosts] = useState([]);
@@ -7,6 +9,7 @@ const SponsoredCarousel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const navigate = useNavigate();
 
   const goToNext = useCallback(() => {
     if (sponsoredPosts.length === 0 || isTransitioning) return;
@@ -157,7 +160,7 @@ const SponsoredCarousel = () => {
             <h4 className="font-bold text-gray-900 mb-2 text-lg">{currentPost.title}</h4>
             <p className="text-gray-600 mb-3 line-clamp-3 leading-relaxed">{currentPost.content}</p>
             <div className="mt-auto pt-2">
-              <button className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors duration-200 flex items-center">
+              <button onClick={() => navigate(`/sponsored-posts`)} className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors duration-200 flex items-center">
                 Learn more
                 <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

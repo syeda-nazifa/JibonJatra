@@ -117,7 +117,7 @@ const AnnouncementSidebar = ({ announcements }) => {
     return (
       <div className="bg-white rounded-lg shadow-sm p-4">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-semibold text-gray-900 text-sm">Announcements</h2>
+          <h2 className="text-lg font-semibold text-gray-900 ">Announcements</h2>
           <Link 
             to="/announcements" 
             className="text-xs text-blue-600 hover:text-blue-800 font-medium"
@@ -133,7 +133,7 @@ const AnnouncementSidebar = ({ announcements }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 sticky top-6 w-80">
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-lg font-semibold text-gray-900 text-sm">Announcements 📢</h2>
+        <h2 className="text-lg font-semibold text-gray-900 ">Announcements 📢</h2>
         <Link 
           to="/announcements" 
           className="text-xs text-blue-600 hover:text-blue-800 font-medium"
