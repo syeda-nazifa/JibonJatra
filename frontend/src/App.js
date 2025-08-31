@@ -6,18 +6,8 @@ import Layout from "./components/Layout";
 import Posts from "./pages/Posts";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
-
-
-import LostFound from "./pages/LostFound"; // adjust path if App.jsx is in src/
-
-
-
-// import AdminRoleUpdate from "./pages/AdminRoleUpdate";
-// import AdminUserManagement from "./pages/AdminUserManagement"
-
-
+import LostFound from "./pages/LostFound";
 import Profile from "./pages/Profile";
-
 import ProfileEdit from "./pages/ProfileEdit";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminRoleUpdate from "./pages/AdminRoleUpdate";
@@ -31,17 +21,16 @@ import ServiceEdit from "./pages/ServiceEdit";
 import Products from "./pages/Products";
 import ProductNew from "./pages/ProductNew";
 import ProductEdit from "./pages/ProductEdit";
-import Shop from "./pages/Shop"; // <-- Shop page
-
+import Shop from "./pages/Shop";
 import MarketList from "./pages/MarketList";
 import MarketCreate from "./pages/MarketCreate";
 import MarketEdit from "./pages/MarketEdit";
 import Feed from './pages/Feed';
-
 import ServiceDetail from "./pages/ServiceDetail";
 
-// const [token, setToken] = useState(localStorage.getItem('token'));
-// const [user, setUser] = useState(null);
+// 🔽 ADD THESE TWO IMPORTS
+import SponsoredPosts from './pages/SponsoredPosts';
+import AdminSponsoredPosts from './pages/AdminSponsoredPosts';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
@@ -52,7 +41,6 @@ const ProtectedRoute = ({ children, user, adminOnly = false }) => {
 
 function App() {
   const [token] = useState(localStorage.getItem('token'));
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -100,12 +88,8 @@ function App() {
           <Route path="profile" element={<Profile user={user} setUser={setUser} />} />
           <Route path="profile/edit" element={<ProfileEdit setUser={setUser} />} />
           <Route path="lostfound" element={<LostFound user={user} />} />
-          {/* Announcements */}
           <Route path="announcements" element={<Announcements />} />
-
           <Route path="shop" element={<Shop user={user} />} />
-
-          {/* Services */}
           <Route path="services" element={<ServiceList token={user?.token} user={user} />} />
           <Route path="services/create" element={<ServiceCreate token={user?.token} user={user} />} />
           <Route path="services/edit/:id" element={<ServiceEdit token={user?.token} user={user} />} />
@@ -114,6 +98,17 @@ function App() {
           <Route path="market/edit/:id" element={<MarketEdit user={user} />} />
           <Route path="/services/:id" element={<ServiceDetail token={token} user={user} />} />
           <Route path="/feed" element={<Feed />} />
+
+          {/* 🔽 ADD THESE TWO ROUTES */}
+          <Route path="sponsored-posts" element={<SponsoredPosts />} />
+          <Route
+            path="admin/sponsored-posts"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminSponsoredPosts />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin Routes */}
           <Route
@@ -141,13 +136,11 @@ function App() {
             }
           />
         </Route>
+        
         {/* Products */}
         <Route path="products" element={<Products />} />
         <Route path="products/new" element={<ProductNew />} />
         <Route path="products/:id/edit" element={<ProductEdit />} />
-
-
-
 
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/login" replace />} />
