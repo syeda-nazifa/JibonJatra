@@ -26,7 +26,7 @@ export default function LostFound() {
 const fetchItems = useCallback(async () => {
   setLoading(true);
   try {
-    const { data } = await api.get("/api/items", { params: { type, search } });
+    const { data } = await api.get("/items", { params: { type, search } });
     setItems(data.items || []);
   } catch (err) {
     console.error("Failed to fetch items:", err);
