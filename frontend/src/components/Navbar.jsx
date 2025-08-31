@@ -35,9 +35,8 @@ const Navbar = ({ role, onLogout }) => {
 
   // Extra links for admins
   const ADMIN_LINKS = [
-    { to: "/admin/users", label: "Users" },
-    { to: "/admin/announcements", label: "Announcements" },
-    { to: "/admin/sponsored-posts", label: "Sponsored Posts" }, // ← FIXED PATH
+    { to: "/admin", label: "Dashboard" },
+
   ];
 
   // Combine base links with admin links if role is admin

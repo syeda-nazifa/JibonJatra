@@ -27,7 +27,7 @@ import MarketCreate from "./pages/MarketCreate";
 import MarketEdit from "./pages/MarketEdit";
 import Feed from './pages/Feed';
 import ServiceDetail from "./pages/ServiceDetail";
-
+import AdminDashboard from "./pages/AdminDashboard";
 // 🔽 ADD THESE TWO IMPORTS
 import SponsoredPosts from './pages/SponsoredPosts';
 import AdminSponsoredPosts from './pages/AdminSponsoredPosts';
@@ -98,6 +98,14 @@ function App() {
           <Route path="market/edit/:id" element={<MarketEdit user={user} />} />
           <Route path="/services/:id" element={<ServiceDetail token={token} user={user} />} />
           <Route path="/feed" element={<Feed />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute user={user} adminOnly={true}>
+                <AdminDashboard role={user?.role} onLogout={handleLogout} />
+              </ProtectedRoute>
+            }
+          />
 
           {/* 🔽 ADD THESE TWO ROUTES */}
           <Route path="sponsored-posts" element={<SponsoredPosts />} />
@@ -136,7 +144,7 @@ function App() {
             }
           />
         </Route>
-        
+
         {/* Products */}
         <Route path="products" element={<Products />} />
         <Route path="products/new" element={<ProductNew />} />
