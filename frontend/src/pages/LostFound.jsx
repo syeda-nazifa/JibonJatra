@@ -45,7 +45,7 @@ const fetchItems = useCallback(async () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await api.delete(`/items/${id}`, {
+      await api.delete(`/api/items/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setItems((prev) => prev.filter(i => i._id !== id));
