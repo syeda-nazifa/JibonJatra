@@ -27,6 +27,7 @@ const app = express();
 // app.use(cors({ origin: "http://localhost:3000" }));
 const allowedOrigins = [
   'http://localhost:3000',
+  'https://jibonjatra-web.onrender.com',
   process.env.FRONTEND_URL // Will be set in Render
 ];
 
