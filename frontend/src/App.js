@@ -32,6 +32,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import SponsoredPosts from './pages/SponsoredPosts';
 import AdminSponsoredPosts from './pages/AdminSponsoredPosts';
 
+import HomeRent from './pages/HomeRent';
+
 // Protected Route Component
 const ProtectedRoute = ({ children, user, adminOnly = false }) => {
   if (!user) return <Navigate to="/login" replace />;
@@ -98,6 +100,7 @@ function App() {
           <Route path="market/edit/:id" element={<MarketEdit user={user} />} />
           <Route path="/services/:id" element={<ServiceDetail token={token} user={user} />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/home-rent" element={<HomeRent />} />
           <Route
             path="/admin"
             element={

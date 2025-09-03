@@ -1,39 +1,4 @@
-// // import axios from "axios";
 
-// // export const api = axios.create({
-// //   baseURL: process.env.REACT_APP_API_BASE || "http://localhost:5000/api",
-// // });
-// // export default api;
-
-// // frontend/src/api/client.js
-// import axios from "axios";
-
-// const api = axios.create({
-//   baseURL: process.env.REACT_APP_API_BASE || "http://localhost:5000/api",
-// });
-
-// // Add request interceptor to include auth token
-// api.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem('token');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
-// export const getImageUrl = (imagePath) => {
-//   if (!imagePath) return null;
-//   if (imagePath.startsWith('http')) return imagePath;
-//   return `http://localhost:5000${imagePath}`;
-// };
-
-// export default api;
-// client.js
 import axios from "axios";
 
 const api = axios.create({

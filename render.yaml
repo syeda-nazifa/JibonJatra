@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: jibonjatra-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: jibonjatra-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
+      # ADD THESE CLOUDINARY VARIABLES:
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false  # You'll set this manually in Render dashboard
+      - key: CLOUDINARY_API_KEY
+        sync: false  # You'll set this manually in Render dashboard
+      - key: CLOUDINARY_API_SECRET
+        sync: false  # You'll set this manually in Render dashboard
+
+  - type: web
+    name: jibonjatra-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: REACT_APP_API_BASE_URL  # Changed from REACT_APP_API_URL for consistency
+        value: https://jibonjatra-backend.onrender.com
+      # ADD FRONTEND CLOUDINARY VARIABLE (optional):
+      - key: REACT_APP_CLOUDINARY_CLOUD_NAME
+        sync: false  # You'll set this manually in Render dashboard
+
+databases:
+  - name: jibonjatra-db
+    plan: free
+    databaseName: jibonjatra
+    user: jibonjatra
